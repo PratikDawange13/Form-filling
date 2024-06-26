@@ -60,7 +60,7 @@ def create_pdf_from_html(html_content, output_path, wkhtmltopdf_path):
     pdfkit.from_string(html_content, output_path, configuration=config)
 
 # Configure the Generative AI model with API key
-api_key = "AIzaSyBwzbkNHte8dSjSl9Ds7_aoxcTU20PH61g"  # Replace with your actual API key
+api_key = st.secrets["api_key"]  # Replace with your actual API key
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
