@@ -101,7 +101,7 @@ if uploaded_questionnaire is not None and uploaded_form is not None:
         #create_pdf(html_content, output_pdf_path)
 
         #wkhtmltopdf_path = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'  # Update this path if necessary
-        wkhtmltopdf_path = os.getenv('WKHTMLTOPDF_PATH', '/path/to/wkhtmltopdf')
+        wkhtmltopdf_path = os.getenv('WKHTMLTOPDF_PATH', r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
         config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
         output_pdf_path = "visa_roadmap.pdf"
 
