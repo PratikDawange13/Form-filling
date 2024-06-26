@@ -7,6 +7,7 @@ import pdfkit
 import markdown2
 #from encode_fun import encode_pdf_to_base64
 from test import extract_text_from_pdf
+import os
 
 # Function to extract text from the first page of a PDF
 def extract_text_from_first_page(pdf_file):
@@ -99,7 +100,9 @@ if uploaded_questionnaire is not None and uploaded_form is not None:
         #create_pdf(filled_details_latin1, output_pdf_path)
         #create_pdf(html_content, output_pdf_path)
 
-        wkhtmltopdf_path = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'  # Update this path if necessary
+        #wkhtmltopdf_path = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'  # Update this path if necessary
+        wkhtmltopdf_path = os.getenv('WKHTMLTOPDF_PATH', '/path/to/wkhtmltopdf')
+        config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
         output_pdf_path = "visa_roadmap.pdf"
 
             # Create PDF from HTML content
