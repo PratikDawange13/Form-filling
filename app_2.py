@@ -8,7 +8,8 @@ import markdown2
 #from encode_fun import encode_pdf_to_base64
 from test import extract_text_from_pdf
 import os
-
+from dotenv import load_dotenv 
+load_dotenv()
 # Function to extract text from the first page of a PDF
 def extract_text_from_first_page(pdf_file):
     try:
@@ -62,6 +63,8 @@ def create_pdf_from_html(html_content, output_path, wkhtmltopdf_path):
 
 # Configure the Generative AI model with API key
 api_key = st.secrets["api_key"]  # Replace with your actual API key
+if not api_key:
+    api_key = os.getenv("api_key")    
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
