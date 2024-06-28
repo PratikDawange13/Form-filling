@@ -8,7 +8,12 @@ import markdown2
 #from encode_fun import encode_pdf_to_base64
 from test import extract_text_from_pdf
 import os
+<<<<<<< HEAD
 from markdown_pdf import MarkdownPdf, Section
+=======
+from dotenv import load_dotenv 
+load_dotenv()
+>>>>>>> b1667a0a8e033e418f43333552d00389bb386146
 # Function to extract text from the first page of a PDF
 def extract_text_from_first_page(pdf_file):
     try:
@@ -61,7 +66,9 @@ def create_pdf_from_html(html_content, output_path, wkhtmltopdf_path):
     pdfkit.from_string(html_content, output_path, configuration=config)
 
 # Configure the Generative AI model with API key
-api_key = st.secrets["api_key"]  # Replace with your actual API key
+#api_key = st.secrets["api_key"]  # Replace with your actual API key
+#if not api_key:
+api_key = os.getenv("api_key")    
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
@@ -107,10 +114,15 @@ if uploaded_questionnaire is not None and uploaded_form is not None:
 
             # Create PDF from HTML content
         #create_pdf_from_html(html_content, output_pdf_path, wkhtmltopdf_path)
+<<<<<<< HEAD
         pdf = MarkdownPdf()
         pdf.add_section(Section(filled_details_latin1, toc=False))
         pdf.save('output2.pdf')
         with open('output2.pdf', "rb") as pdf_file:
+=======
+
+        with open(output_pdf_path, "rb") as pdf_file:
+>>>>>>> b1667a0a8e033e418f43333552d00389bb386146
             st.download_button(
                 label="Download Filled Form Details as PDF",
                 data=pdf_file,
