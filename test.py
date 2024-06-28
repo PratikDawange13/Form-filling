@@ -1,5 +1,4 @@
 import fitz
-import pymupdf
 
 #def extract_text_from_pdf(pdf_file):
  #   with pymupdf.open(pdf_file) as doc:

@@ -8,7 +8,7 @@ import markdown2
 #from encode_fun import encode_pdf_to_base64
 from test import extract_text_from_pdf
 import os
-
+from markdown_pdf import MarkdownPdf, Section
 # Function to extract text from the first page of a PDF
 def extract_text_from_first_page(pdf_file):
     try:
@@ -101,14 +101,16 @@ if uploaded_questionnaire is not None and uploaded_form is not None:
         #create_pdf(html_content, output_pdf_path)
 
         #wkhtmltopdf_path = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'  # Update this path if necessary
-        wkhtmltopdf_path = st.secrets["wkhtmltopdf_path"]
-        config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
-        output_pdf_path = "visa_roadmap.pdf"
+        #wkhtmltopdf_path = st.secrets["wkhtmltopdf_path"]
+        #config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+        #output_pdf_path = "visa_roadmap.pdf"
 
             # Create PDF from HTML content
-        create_pdf_from_html(html_content, output_pdf_path, wkhtmltopdf_path)
-
-        with open(output_pdf_path, "rb") as pdf_file:
+        #create_pdf_from_html(html_content, output_pdf_path, wkhtmltopdf_path)
+        pdf = MarkdownPdf()
+        pdf.add_section(Section(filled_details_latin1, toc=False))
+        pdf.save('output2.pdf')
+        with open('output2.pdf', "rb") as pdf_file:
             st.download_button(
                 label="Download Filled Form Details as PDF",
                 data=pdf_file,
