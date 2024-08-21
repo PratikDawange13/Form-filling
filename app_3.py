@@ -88,7 +88,7 @@ if uploaded_questionnaire is not None and uploaded_form is not None:
         # pdf.add_section(Section(filled_form, toc=False))
         #print("added a section")
         pdf.save('filled_form_details.pdf')
-        print("saved the pdf")
+        #print("saved the pdf")
         with open('filled_form_details.pdf', "rb") as pdf_file:
             st.download_button(
                 label="Download Filled Form Details as PDF",
