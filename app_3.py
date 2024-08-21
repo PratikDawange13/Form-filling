@@ -65,14 +65,15 @@ if uploaded_questionnaire is not None and uploaded_form is not None:
 
         # Convert to latin-1 compatible text
         filled_details_latin1 = convert_to_latin1_compatible(filled_details)
-        print(type(filled_details_latin1))
+        #print(type(filled_details_latin1))
         # print("WHOLE FILLED DETAILS", filled_details)
         parts = filled_details_latin1.split("MISSING INFORMATION")
         # print("PARTS from the filled details",parts)
         # filled_form = parts[0].replace('\u2019', '-')
         # filled_form = filled_form.replace('\u201c', '-')
         filled_form = parts[0].strip()[:-4]
-        print(type(filled_form))
+        #print(type(filled_form))
+
         # filled_form_formatted=convert_to_latin1_compatible(filled_form)
         # print("FILLED FORM", filled_form_formatted)
         missing_info = "MISSING INFORMATION\n" + parts[1].strip() if len(parts) > 1 else "No missing information"
@@ -82,10 +83,10 @@ if uploaded_questionnaire is not None and uploaded_form is not None:
 
         # Convert the filled details to PDF
         pdf = MarkdownPdf()
-        print("created pdf object")
+        #print("created pdf object")
         pdf.add_section(Section(filled_form, toc=False))
         # pdf.add_section(Section(filled_form, toc=False))
-        print("added a section")
+        #print("added a section")
         pdf.save('filled_form_details.pdf')
         print("saved the pdf")
         with open('filled_form_details.pdf', "rb") as pdf_file:
