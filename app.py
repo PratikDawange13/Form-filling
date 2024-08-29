@@ -70,8 +70,8 @@ if uploaded_Questionaier is not None and uploaded_form is not None:
         encodedpdf1 = extract_text_from_pdf(uploaded_Questionaier.read())
         encodedpdf2 = extract_text_from_pdf(uploaded_form.read())
 
-        prompt1 = f"Please go through all the information provided below for a person"
-        prompt2 = f"Output the field from with all the respective fields and try to fill all the details that you find in the information document"
+        prompt1 = f"""Please go through all the information provided below for a person"""
+        prompt2 = f"""Output the field from with all the respective fields and try to fill all the details that you find in the information document. The output should be in dictionary format with field name as the key and the correct information in value for example {{'Age':'24','Name':'Tommy'}}, and Identify missing information and provide them after form filling, In heading with "MISSING INFORMATION" """
     
     # Generate content using the Generative Model
         response = model.generate_content([prompt1,encodedpdf1,prompt2,encodedpdf2 ])
@@ -79,7 +79,7 @@ if uploaded_Questionaier is not None and uploaded_form is not None:
     # Resolve the response
         response.resolve()
         filled_details = response.text
-
+        print(filled_details)
     # Convert to latin-1 compatible text
         filled_details_latin1 = convert_to_latin1_compatible(filled_details)
 

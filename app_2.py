@@ -9,7 +9,6 @@ import markdown2
 from test import extract_text_from_pdf
 import os
 from markdown_pdf import MarkdownPdf, Section
-
 from dotenv import load_dotenv 
 load_dotenv()
 
@@ -64,9 +63,7 @@ def create_pdf_from_html(html_content, output_path, wkhtmltopdf_path):
     config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
     pdfkit.from_string(html_content, output_path, configuration=config)
 
-# Configure the Generative AI model with API key
-#api_key = st.secrets["api_key"]  # Replace with your actual API key
-#if not api_key:
+
 api_key = os.getenv("api_key")    
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-1.5-flash')
@@ -83,8 +80,8 @@ if uploaded_questionnaire is not None and uploaded_form is not None:
         encodedpdf1 = extract_text_from_pdf(uploaded_questionnaire.read())
         encodedpdf2 = extract_text_from_pdf(uploaded_form.read())
 
-        prompt1 = "Please go through all the information provided below for a person"
-        prompt2 = "Output the field from with all the respective fields and try to fill all the details that you find in the information document"
+        prompt1 = """Please go through all the information provided below for a person"""
+        prompt2 = """Fill out the following form using the provided client information. Leave fields blank if the information is not available. After completing the form, list all missing information under the heading "MISSING INFORMATION" Do not give missing information in Filled Form pdf """
         
         # Generate content using the Generative Model
         response = model.generate_content([prompt1, encodedpdf1, prompt2, encodedpdf2])
@@ -96,23 +93,19 @@ if uploaded_questionnaire is not None and uploaded_form is not None:
         # Convert to latin-1 compatible text
         filled_details_latin1 = convert_to_latin1_compatible(filled_details)
 
-        st.subheader('Filled Form Details')
-        st.text(filled_details_latin1)
+        parts = filled_details_latin1.split("MISSING INFORMATION")
+        filled_form = parts[0].strip()
+        missing_info = "MISSING INFORMATION\n" + parts[1].strip() if len(parts) > 1 else "No missing information"
+
+        #st.subheader('Filled Form Details')
+        #st.text(filled_details_latin1)
+        st.subheader('Missing Information')
+        st.text(missing_info)        
 
         html_content=markdown2.markdown(filled_details_latin1)
 
         # Convert the filled details to PDF
         output_pdf_path = "filled_form_details.pdf"
-        #create_pdf(filled_details_latin1, output_pdf_path)
-        #create_pdf(html_content, output_pdf_path)
-
-        #wkhtmltopdf_path = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'  # Update this path if necessary
-        #wkhtmltopdf_path = st.secrets["wkhtmltopdf_path"]
-        #config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
-        #output_pdf_path = "visa_roadmap.pdf"
-
-            # Create PDF from HTML content
-        #create_pdf_from_html(html_content, output_pdf_path, wkhtmltopdf_path)
 
         pdf = MarkdownPdf()
         pdf.add_section(Section(filled_details_latin1, toc=False))
